@@ -1,6 +1,6 @@
 # world-graphs
 
-![world-borders](/home/sebastian/Github/world-graphs/gallery/world-borders.png)
+![world-borders](gallery/world-borders.png)
 
 
 
