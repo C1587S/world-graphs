@@ -1,4 +1,4 @@
 # world-graphs
 
 ## References
-- circle-flags: https://github.com/HatScripts/circle-flags
+- circle-flags in SVG format: https://github.com/HatScripts/circle-flags
