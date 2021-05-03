@@ -2,11 +2,11 @@ import igviz as ig
 import matplotlib.pyplot as plt
 import networkx as nx
 
-# draw_graph3 was taken from (thanks to): 
+# draw_graph3 was inspired from (thanks to): 
 # https://gist.github.com/quadrismegistus/92a7fba479fc1e7d2661909d19d4ae7e
 # https://gist.github.com/quadrismegistus/92a7fba479fc1e7d2661909d19d4ae7e
 def draw_graph3(networkx_graph,notebook=True,output_filename='graph.html',show_buttons=True,only_physics_buttons=False,
-                height=None,width=None,bgcolor=None,font_color=None,pyvis_options=None):
+                height=None,width=None,bgcolor=None,font_color=None,pyvis_options=None, p_type=False):
     """
     This function accepts a networkx graph object,
     converts it to a pyvis network object preserving its node and edge attributes,
@@ -39,8 +39,8 @@ def draw_graph3(networkx_graph,notebook=True,output_filename='graph.html',show_b
 
     # for each node and its attributes in the networkx graph
     for node,node_attrs in networkx_graph.nodes(data=True):
-        pyvis_graph.add_node(str(node),**node_attrs)
-
+        pyvis_graph.add_node(str(node), shape='image',**node_attrs)
+    
     # for each edge and its attributes in the networkx graph
     for source,target,edge_attrs in networkx_graph.edges(data=True):
         # if value/width not specified directly, and weight is specified, set 'value' to 'weight'
@@ -48,7 +48,7 @@ def draw_graph3(networkx_graph,notebook=True,output_filename='graph.html',show_b
             # place at key 'value' the weight of the edge
             edge_attrs['value']=edge_attrs['weight']
         # add the edge
-        pyvis_graph.add_edge(str(source),str(target),**edge_attrs)
+        pyvis_graph.add_edge(str(source),str(target), value = 50, **edge_attrs)
 
     # turn buttons on
     if show_buttons:
@@ -60,6 +60,33 @@ def draw_graph3(networkx_graph,notebook=True,output_filename='graph.html',show_b
     # pyvis-specific options
     if pyvis_options:
         pyvis_graph.set_options(pyvis_options)
+
+    # fix physics collision
+    pyvis_graph.toggle_physics(False)
+    # pyvis_graph.barnes_hut()
+    if p_type: 
+        pyvis_graph.set_options('''
+            var options = {
+                "nodes": {
+                "font": {
+                "size": 0
+                }
+            },
+            "edges": {
+                
+                "color": {
+                "color": "rgba(0, 232, 54,1)",
+                "highlight": "rgba(255,116,53,1)",
+                "inherit": false
+                },
+                "smooth": false
+            },
+            "physics": {
+                "enabled": false,
+                "minVelocity": 0.75
+            }
+            }
+        ''')
 
     # return and also save
     return pyvis_graph.show(output_filename)
